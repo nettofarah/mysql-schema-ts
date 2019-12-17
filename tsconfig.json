@@ -11,6 +11,7 @@
     "outDir": "dist",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "declaration": true,
     "lib": ["es2020"],
     "baseUrl": "./src",
     "paths": {
