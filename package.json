@@ -1,6 +1,6 @@
 {
   "name": "mysql-schema-ts",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "mysql-schema-ts coverts mysql schemas into typescript interfaces",
   "main": "index.js",
   "author": "Netto Farah <nettofarah@gmail.com>",
