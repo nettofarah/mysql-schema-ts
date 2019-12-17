@@ -1,7 +1,7 @@
 {
-  "name": "@nettofarah/mysql-ts",
+  "name": "mysql-schema-ts",
   "version": "0.1.0",
-  "description": "@nettofarah/@nettofarah/mysql-ts coverts mysql schemas into typescript interfaces",
+  "description": "mysql-schema-ts coverts mysql schemas into typescript interfaces",
   "main": "index.js",
   "author": "Netto Farah <nettofarah@gmail.com>",
   "license": "MIT",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nettofarah/@nettofarah/@nettofarah/mysql-ts.git"
+    "url": "https://github.com/nettofarahmysql-schema-ts.git"
   },
   "dependencies": {
     "lodash": "^4.17.15",
@@ -29,7 +29,7 @@
     "dist"
   ],
   "bin": {
-    "mysql-ts": "./dist/bin/index.js"
+    "mysql-schema-ts": "./dist/bin/index.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

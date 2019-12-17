@@ -1,20 +1,18 @@
-# mysql-ts
+# mysql-schema-ts
 
-> mysql-ts is a simple npm module you can use to convert a mysql schema into typescript interfaces
+> mysql-schema-ts is a simple npm module you can use to convert a mysql schema into typescript interfaces
 
 # Usage
 
 ```bash
-$ npm install -g @nettofarah/mysql-ts
-
 # to infer an entire schema
-$ mysql-ts mysql://root@localhost:3306/database
+$ npx mysql-schema-ts mysql://root@localhost:3306/database
 
 # to infer a specific table
-$ mysql-ts mysql://root@localhost:3306/database table_name
+$ npx mysql-schema-ts mysql://root@localhost:3306/database table_name
 ```
 
-tip: You can pipe the output of mysql-ts into a file with `mysql-ts <args> > schema.ts`
+tip: You can pipe the output of mysql-schema-ts into a file with `npx mysql-schema-ts <args> > schema.ts`
 
 ## Demo
 
@@ -60,7 +58,7 @@ CREATE TABLE IF NOT EXISTS track ( -- replicate (verbose)
 run:
 
 ```bash
-$ npx @nettofarah/mysql-ts mysql://root@localhost:3306/musicbrainz
+$ npx mysql-schema-ts mysql://root@localhost:3306/musicbrainz
 ```
 
 ```typescript
@@ -99,10 +97,10 @@ export interface track {
 }
 ```
 
-## Using `@nettofarah/mysql-ts` programatically
+## Using `mysql-schema-ts` programatically
 
 ```typescript
-import { inferSchema, inferTable } from '@nettofarah/mysql-ts'
+import { inferSchema, inferTable } from 'mysql-schema-ts'
 
 await inferSchema(connectionString)
 await inferTable(connectionString, tableName)
@@ -110,7 +108,7 @@ await inferTable(connectionString, tableName)
 
 ## Design
 
-@nettofarah/mysql-ts is inpired by the awesome [schemats](https://github.com/SweetIQ/schemats) library.
+mysql-schema-ts is inpired by the awesome [schemats](https://github.com/SweetIQ/schemats) library.
 But takes a simpler, more blunt, and configuration free approach:
 
 - Simpler defaults
