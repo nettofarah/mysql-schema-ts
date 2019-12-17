@@ -14,6 +14,89 @@ $ npx mysql-ts mysql://root@localhost:3306/database table_name
 
 tip: You can pipe the output of mysql-ts into a file with `npx mysql-ts <args> > schema.ts`
 
+## Demo
+
+For the following SQL schema: (from the musicbrainz database)
+
+```sql
+CREATE TABLE IF NOT EXISTS artist ( -- replicate (verbose)
+    id                  SERIAL,
+    gid                 CHAR(36) NOT NULL,
+    name                VARCHAR(255) NOT NULL,
+    sort_name           VARCHAR(255) NOT NULL,
+    begin_date_year     SMALLINT,
+    begin_date_month    SMALLINT,
+    begin_date_day      SMALLINT,
+    end_date_year       SMALLINT,
+    end_date_month      SMALLINT,
+    end_date_day        SMALLINT,
+    type                INTEGER, -- references artist_type.id
+    area                INTEGER, -- references area.id
+    gender              INTEGER, -- references gender.id
+    comment             VARCHAR(255) NOT NULL DEFAULT '',
+    edits_pending       INTEGER NOT NULL DEFAULT 0 CHECK (edits_pending >= 0),
+    last_updated        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    ended               CHAR(1) NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS track ( -- replicate (verbose)
+    id                  SERIAL,
+    gid                 CHAR(36) NOT NULL,
+    recording           INTEGER NOT NULL, -- references recording.id
+    medium              INTEGER NOT NULL, -- references medium.id
+    position            INTEGER NOT NULL,
+    number              TEXT NOT NULL,
+    name                VARCHAR(255) NOT NULL,
+    artist_credit       INTEGER NOT NULL, -- references artist_credit.id
+    length              INTEGER CHECK (length IS NULL OR length > 0),
+    edits_pending       INTEGER NOT NULL DEFAULT 0 CHECK (edits_pending >= 0),
+    last_updated        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    is_data_track       CHAR(1) NOT NULL DEFAULT FALSE
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
+
+run:
+
+```bash
+$ npx mysql-ts mysql://root@localhost:3306/musicbrainz
+```
+
+```typescript
+export interface artist {
+  id: number
+  gid: string
+  name: string
+  sort_name: string
+  begin_date_year: number | null
+  begin_date_month: number | null
+  begin_date_day: number | null
+  end_date_year: number | null
+  end_date_month: number | null
+  end_date_day: number | null
+  type: number | null
+  area: number | null
+  gender: number | null
+  comment: string
+  edits_pending: number
+  last_updated: Date
+  ended: string
+}
+export interface track {
+  id: number
+  gid: string
+  recording: number
+  medium: number
+  position: number
+  number_: string
+  name: string
+  artist_credit: number
+  length: number | null
+  edits_pending: number
+  last_updated: Date
+  is_data_track: string
+}
+```
+
 ## Using `mysql-ts` programatically
 
 ```typescript
