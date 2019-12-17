@@ -5,14 +5,16 @@
 # Usage
 
 ```bash
+$ npm install -g @nettofarah/mysql-ts
+
 # to infer an entire schema
-$ npx mysql-ts mysql://root@localhost:3306/database
+$ mysql-ts mysql://root@localhost:3306/database
 
 # to infer a specific table
-$ npx mysql-ts mysql://root@localhost:3306/database table_name
+$ mysql-ts mysql://root@localhost:3306/database table_name
 ```
 
-tip: You can pipe the output of mysql-ts into a file with `npx mysql-ts <args> > schema.ts`
+tip: You can pipe the output of mysql-ts into a file with `mysql-ts <args> > schema.ts`
 
 ## Demo
 
@@ -58,7 +60,7 @@ CREATE TABLE IF NOT EXISTS track ( -- replicate (verbose)
 run:
 
 ```bash
-$ npx mysql-ts mysql://root@localhost:3306/musicbrainz
+$ npx @nettofarah/mysql-ts mysql://root@localhost:3306/musicbrainz
 ```
 
 ```typescript
@@ -97,10 +99,10 @@ export interface track {
 }
 ```
 
-## Using `mysql-ts` programatically
+## Using `@nettofarah/mysql-ts` programatically
 
 ```typescript
-import { inferSchema, inferTable } from 'mysql-ts'
+import { inferSchema, inferTable } from '@nettofarah/mysql-ts'
 
 await inferSchema(connectionString)
 await inferTable(connectionString, tableName)
@@ -108,7 +110,7 @@ await inferTable(connectionString, tableName)
 
 ## Design
 
-mysql-ts is inpired by the awesome [schemats](https://github.com/SweetIQ/schemats) library.
+@nettofarah/mysql-ts is inpired by the awesome [schemats](https://github.com/SweetIQ/schemats) library.
 But takes a simpler, more blunt, and configuration free approach:
 
 - Simpler defaults
