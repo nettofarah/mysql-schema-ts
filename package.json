@@ -1,6 +1,6 @@
 {
   "name": "mysql-schema-ts",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "mysql-schema-ts coverts mysql schemas into typescript interfaces",
   "main": "index.js",
   "author": "Netto Farah <nettofarah@gmail.com>",
@@ -24,8 +24,8 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "mysql": "^2.17.1",
-    "sql-template-strings": "^2.2.2",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "sql-template-strings": "^2.2.2"
   },
   "files": [
     "dist"
