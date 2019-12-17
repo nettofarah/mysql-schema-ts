@@ -22,6 +22,7 @@
     "url": "https://github.com/nettofarahmysql-schema-ts.git"
   },
   "dependencies": {
+    "sql-template-strings": "^2.2.2",
     "lodash": "^4.17.15",
     "mysql": "^2.17.1"
   },
@@ -67,7 +68,6 @@
     "lint-staged": "^9.5.0",
     "np": "^5.2.1",
     "prettier": "^1.19.1",
-    "sql-template-strings": "^2.2.2",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.3"
   }
