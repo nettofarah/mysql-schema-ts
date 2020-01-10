@@ -1,6 +1,6 @@
 {
   "name": "mysql-schema-ts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "mysql-schema-ts coverts mysql schemas into typescript interfaces",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
