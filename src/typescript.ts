@@ -25,7 +25,9 @@ export function tableToTS(name: string, table: Table): string {
     const hasDefault = table[column].hasDefault
     const nullable = table[column].nullable ? '| null' : ''
     const comment = table[column].comment ? `\n/** ${table[column].comment} */\n` : ''
-    return `${comment}${normalize(column)}${hasDefault ? '?' : ''}: ${type}${nullable}\n`
+
+    const isOptional = hasDefault || nullable
+    return `${comment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
   })
 
   return `
