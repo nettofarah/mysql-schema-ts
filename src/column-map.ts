@@ -2,6 +2,15 @@ import { Table } from './typescript'
 import { mapValues } from 'lodash'
 import { Enums } from './mysql-client'
 
+interface MapColumnOptions {
+  /** Treats binary fields as strings */
+  BinaryAsBuffer: boolean
+}
+
+const options: MapColumnOptions = {
+  BinaryAsBuffer: Boolean(process.env.BINARY_AS_BUFFER)
+}
+
 export function mapColumn(Table: Table, enumTypes: Enums): Table {
   return mapValues(Table, column => {
     switch (column.udtName) {
@@ -34,7 +43,7 @@ export function mapColumn(Table: Table, enumTypes: Enums): Table {
         column.tsType = 'boolean'
         return column
       case 'json':
-        column.tsType = 'Object'
+        column.tsType = 'JSONValue'
         return column
       case 'date':
       case 'datetime':
@@ -48,7 +57,11 @@ export function mapColumn(Table: Table, enumTypes: Enums): Table {
       case 'binary':
       case 'varbinary':
       case 'bit':
-        column.tsType = 'Buffer'
+        if (options.BinaryAsBuffer) {
+          column.tsType = 'Buffer'
+        } else {
+          column.tsType = 'string'
+        }
         return column
       default: {
         const name = column.udtName

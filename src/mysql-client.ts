@@ -22,6 +22,8 @@ type TableColumnType = {
   column_name: string
   data_type: string
   is_nullable: string
+  column_default: string | null
+  column_comment: string | null
 }
 
 type TableType = {
@@ -109,7 +111,7 @@ export class MySQL {
 
     const tableColumns = await query<TableColumnType>(
       this.connection,
-      sql`SELECT column_name, data_type, is_nullable
+      sql`SELECT column_name, data_type, is_nullable, column_default, column_comment
        FROM information_schema.columns
        WHERE table_name = ${tableName} 
        AND table_schema = ${tableSchema}`
@@ -123,6 +125,8 @@ export class MySQL {
 
       Table[columnName] = {
         udtName: isEnum ? enumNameFromColumn(dataType, columnName) : dataType,
+        comment: schemaItem.column_comment,
+        hasDefault: Boolean(schemaItem.column_default),
         nullable
       }
     })
