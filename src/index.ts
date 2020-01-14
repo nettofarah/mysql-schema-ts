@@ -1,4 +1,4 @@
-import { tableToTS } from './typescript'
+import { tableToTS, Table } from './typescript'
 import { MySQL } from './mysql-client'
 import prettier from 'prettier'
 import pkg from '../package.json'
@@ -41,4 +41,15 @@ export async function inferSchema(connectionString: string): Promise<string> {
   const interfaces = tables.map(table => tableToTS(table.name, table.table))
   const code = [header(interfaces.some(i => i.includes('JSON'))), ...interfaces].join('\n')
   return pretty(code)
+}
+
+export async function inferTableObject(connectionString: string, table: string): Promise<Table> {
+  const db = new MySQL(connectionString)
+  return db.table(table)
+}
+
+export async function inferSchemaObject(connectionString: string) {
+  const db = new MySQL(connectionString)
+  const tables = await db.allTables()
+  return tables
 }
