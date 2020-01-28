@@ -2,6 +2,7 @@ export interface Column {
   udtName: string
   nullable: boolean
   hasDefault: boolean
+  defaultValue: string | null
   comment: string | null
   tsType?: string
 }
@@ -22,12 +23,15 @@ function normalize(name: string): string {
 export function tableToTS(name: string, table: Table): string {
   const members = Object.keys(table).map(column => {
     const type = table[column].tsType
-    const hasDefault = table[column].hasDefault
     const nullable = table[column].nullable ? '| null' : ''
-    const comment = table[column].comment ? `\n/** ${table[column].comment} */\n` : ''
 
-    const isOptional = hasDefault || nullable
-    return `${comment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
+    const hasDefault = table[column].hasDefault
+    const defaultComment = hasDefault ? `Defaults to: ${table[column].defaultValue}.` : ''
+    const comment = `${table[column].comment} ${defaultComment}`
+    const tsComment = comment.trim().length > 0 ? `\n/** ${comment} */\n` : ''
+
+    const isOptional = nullable
+    return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
   })
 
   return `

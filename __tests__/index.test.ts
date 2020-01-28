@@ -54,7 +54,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'agreements')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
       export interface agreements {
@@ -71,7 +71,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'requests')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
       export interface requests {
@@ -88,16 +88,17 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'complex')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
       export interface complex {
         id: string
         name: string
         nullable?: string | null
-        created_at?: Date
+        /**  Defaults to: CURRENT_TIMESTAMP. */
+        created_at: Date
         created_on: Date
-        /** This is an awesome field */
+        /** This is an awesome field  */
         documented_field?: string | null
       }
       "
@@ -108,7 +109,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'table_with_json')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
@@ -130,7 +131,7 @@ describe('inferSchema', () => {
     const code = await inferSchema(connectionString)
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
@@ -148,9 +149,10 @@ describe('inferSchema', () => {
         id: string
         name: string
         nullable?: string | null
-        created_at?: Date
+        /**  Defaults to: CURRENT_TIMESTAMP. */
+        created_at: Date
         created_on: Date
-        /** This is an awesome field */
+        /** This is an awesome field  */
         documented_field?: string | null
       }
       export interface requests {
