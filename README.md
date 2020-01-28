@@ -9,7 +9,10 @@
 $ npx mysql-schema-ts mysql://root@localhost:3306/database
 
 # to infer a specific table
-$ npx mysql-schema-ts mysql://root@localhost:3306/database table_name
+$ npx mysql-schema-ts mysql://root@localhost:3306/database --table table_name
+
+# add optional prefix to table names
+$ npx mysql-schema-ts mysql://root@localhost:3306/database --prefix SQL
 ```
 
 tip: You can pipe the output of mysql-schema-ts into a file with `npx mysql-schema-ts <args> > schema.ts`
