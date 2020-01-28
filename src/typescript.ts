@@ -27,7 +27,7 @@ function normalize(name: string): string {
   return safename
 }
 
-export function tableToTS(name: string, table: Table): string {
+export function tableToTS(name: string, prefix: string, table: Table): string {
   const members = (withDefaults: boolean): string[] =>
     Object.keys(table).map(column => {
       const type = table[column].tsType
@@ -46,23 +46,25 @@ export function tableToTS(name: string, table: Table): string {
       return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
     })
 
+  const tableName = prefix + camelize(normalize(name))
+
   return `
     /**
      * Exposes all fields present in ${name} as a typescript
      * interface.
     */
-    export interface ${camelize(normalize(name))} {
+    export interface ${tableName} {
     ${members(false)}
     }
 
     /**
-     * Exposes the same fields as ${camelize(normalize(name))},
+     * Exposes the same fields as ${tableName},
      * but makes every field containing a DEFAULT value optional.
      *
      * This is especially useful when generating inserts, as you
      * should be able to ommit these fields if you'd like
     */
-    export interface ${camelize(normalize(name))}WithDefaults {
+    export interface ${tableName}WithDefaults {
     ${members(true)}
     }
   `.trim()

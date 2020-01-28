@@ -1,17 +1,43 @@
 #!/usr/bin/env node
 import { inferSchema, inferTable } from '../src'
+import meow from 'meow'
 
-const [...args] = process.argv
+const cli = meow(
+  `
+	Usage
+	  $ mysql-schema-ts <input>
+
+	Options
+    --table, -t  Table name
+    --prefix, -p Prefix to add to table names
+
+	Examples
+	  $ mysql-schema-ts --prefix SQL
+`,
+  {
+    flags: {
+      table: {
+        type: 'string',
+        alias: 't'
+      },
+      prefix: {
+        type: 'string',
+        alias: 'p',
+        default: ''
+      }
+    }
+  }
+)
+
+const db = cli.input[0]
+const { table, prefix } = cli.flags
 
 async function main(): Promise<string> {
-  const db = args[2] || ''
-  const table = args[3]
-
   if (table) {
-    return inferTable(db, table)
+    return inferTable(db, table, prefix)
   }
 
-  return inferSchema(db)
+  return inferSchema(db, prefix)
 }
 
 main()
