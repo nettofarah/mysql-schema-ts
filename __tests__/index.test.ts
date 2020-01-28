@@ -54,10 +54,28 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'agreements')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
-      export interface agreements {
+      /**
+       * Exposes all fields present in agreements as a typescript
+       * interface.
+       */
+      export interface Agreements {
+        id: string
+        billing_plan_id: string
+        category: string
+        name: string
+      }
+
+      /**
+       * Exposes the same fields as Agreements,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface AgreementsWithDefaults {
         id: string
         billing_plan_id: string
         category: string
@@ -71,10 +89,28 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'requests')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
-      export interface requests {
+      /**
+       * Exposes all fields present in requests as a typescript
+       * interface.
+       */
+      export interface Requests {
+        id: number
+        name: string
+        url: string
+        integration_type: 'source' | 'destination'
+      }
+
+      /**
+       * Exposes the same fields as Requests,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface RequestsWithDefaults {
         id: number
         name: string
         url: string
@@ -88,16 +124,39 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'complex')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
-      export interface complex {
+      /**
+       * Exposes all fields present in complex as a typescript
+       * interface.
+       */
+      export interface Complex {
         id: string
         name: string
         nullable?: string | null
+        /**  Defaults to: CURRENT_TIMESTAMP. */
+        created_at: Date
+        created_on: Date
+        /** This is an awesome field  */
+        documented_field?: string | null
+      }
+
+      /**
+       * Exposes the same fields as Complex,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface ComplexWithDefaults {
+        id: string
+        name: string
+        nullable?: string | null
+        /**  Defaults to: CURRENT_TIMESTAMP. */
         created_at?: Date
         created_on: Date
-        /** This is an awesome field */
+        /** This is an awesome field  */
         documented_field?: string | null
       }
       "
@@ -108,7 +167,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'table_with_json')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
@@ -116,7 +175,23 @@ describe('inferTable', () => {
       export type JSONObject = { [member: string]: JSONValue }
       export interface JSONArray extends Array<JSONValue> {}
 
-      export interface table_with_json {
+      /**
+       * Exposes all fields present in table_with_json as a typescript
+       * interface.
+       */
+      export interface TableWithJson {
+        id: string
+        data?: JSONValue | null
+      }
+
+      /**
+       * Exposes the same fields as TableWithJson,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface TableWithJsonWithDefaults {
         id: string
         data?: JSONValue | null
       }
@@ -130,7 +205,7 @@ describe('inferSchema', () => {
     const code = await inferSchema(connectionString)
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.0.0
+       Schema Generated with mysql-schema-ts 1.2.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
@@ -138,28 +213,103 @@ describe('inferSchema', () => {
       export type JSONObject = { [member: string]: JSONValue }
       export interface JSONArray extends Array<JSONValue> {}
 
-      export interface agreements {
+      /**
+       * Exposes all fields present in agreements as a typescript
+       * interface.
+       */
+      export interface Agreements {
         id: string
         billing_plan_id: string
         category: string
         name: string
       }
-      export interface complex {
+
+      /**
+       * Exposes the same fields as Agreements,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface AgreementsWithDefaults {
+        id: string
+        billing_plan_id: string
+        category: string
+        name: string
+      }
+      /**
+       * Exposes all fields present in complex as a typescript
+       * interface.
+       */
+      export interface Complex {
         id: string
         name: string
         nullable?: string | null
-        created_at?: Date
+        /**  Defaults to: CURRENT_TIMESTAMP. */
+        created_at: Date
         created_on: Date
-        /** This is an awesome field */
+        /** This is an awesome field  */
         documented_field?: string | null
       }
-      export interface requests {
+
+      /**
+       * Exposes the same fields as Complex,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface ComplexWithDefaults {
+        id: string
+        name: string
+        nullable?: string | null
+        /**  Defaults to: CURRENT_TIMESTAMP. */
+        created_at?: Date
+        created_on: Date
+        /** This is an awesome field  */
+        documented_field?: string | null
+      }
+      /**
+       * Exposes all fields present in requests as a typescript
+       * interface.
+       */
+      export interface Requests {
         id: number
         name: string
         url: string
         integration_type: 'source' | 'destination'
       }
-      export interface table_with_json {
+
+      /**
+       * Exposes the same fields as Requests,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface RequestsWithDefaults {
+        id: number
+        name: string
+        url: string
+        integration_type: 'source' | 'destination'
+      }
+      /**
+       * Exposes all fields present in table_with_json as a typescript
+       * interface.
+       */
+      export interface TableWithJson {
+        id: string
+        data?: JSONValue | null
+      }
+
+      /**
+       * Exposes the same fields as TableWithJson,
+       * but makes every field containing a DEFAULT value optional.
+       *
+       * This is especially useful when generating inserts, as you
+       * should be able to ommit these fields if you'd like
+       */
+      export interface TableWithJsonWithDefaults {
         id: string
         data?: JSONValue | null
       }

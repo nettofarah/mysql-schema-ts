@@ -127,6 +127,7 @@ export class MySQL {
         udtName: isEnum ? enumNameFromColumn(dataType, columnName) : dataType,
         comment: schemaItem.column_comment,
         hasDefault: Boolean(schemaItem.column_default),
+        defaultValue: schemaItem.column_default,
         nullable
       }
     })
