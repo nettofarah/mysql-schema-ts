@@ -1,3 +1,5 @@
+import camelcase from 'camelcase'
+
 export interface Column {
   udtName: string
   nullable: boolean
@@ -11,8 +13,8 @@ export interface Table {
   [columnName: string]: Column
 }
 
-function capitalize(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1)
+function camelize(s: string): string {
+  return camelcase(s, { pascalCase: true })
 }
 
 function normalize(name: string): string {
@@ -45,11 +47,22 @@ export function tableToTS(name: string, table: Table): string {
     })
 
   return `
-    export interface ${capitalize(normalize(name))} {
+    /**
+     * Exposes all fields present in ${name} as a typescript
+     * interface.
+    */
+    export interface ${camelize(normalize(name))} {
     ${members(false)}
     }
 
-    export interface ${capitalize(normalize(name))}WithDefaults {
+    /**
+     * Exposes the same fields as ${camelize(normalize(name))},
+     * but makes every field containing a DEFAULT value optional.
+     *
+     * This is especially useful when generating inserts, as you
+     * should be able to ommit these fields if you'd like
+    */
+    export interface ${camelize(normalize(name))}WithDefaults {
     ${members(true)}
     }
   `.trim()
