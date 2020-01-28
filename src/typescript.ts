@@ -46,7 +46,7 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
       return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
     })
 
-  const tableName = prefix + camelize(normalize(name))
+  const tableName = (prefix || '') + camelize(normalize(name))
 
   return `
     /**
