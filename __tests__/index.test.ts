@@ -57,7 +57,14 @@ describe('inferTable', () => {
        Schema Generated with mysql-schema-ts 1.2.0
       */
 
-      export interface agreements {
+      export interface Agreements {
+        id: string
+        billing_plan_id: string
+        category: string
+        name: string
+      }
+
+      export interface AgreementsWithDefaults {
         id: string
         billing_plan_id: string
         category: string
@@ -74,7 +81,14 @@ describe('inferTable', () => {
        Schema Generated with mysql-schema-ts 1.2.0
       */
 
-      export interface requests {
+      export interface Requests {
+        id: number
+        name: string
+        url: string
+        integration_type: 'source' | 'destination'
+      }
+
+      export interface RequestsWithDefaults {
         id: number
         name: string
         url: string
@@ -91,12 +105,23 @@ describe('inferTable', () => {
        Schema Generated with mysql-schema-ts 1.2.0
       */
 
-      export interface complex {
+      export interface Complex {
         id: string
         name: string
         nullable?: string | null
         /**  Defaults to: CURRENT_TIMESTAMP. */
         created_at: Date
+        created_on: Date
+        /** This is an awesome field  */
+        documented_field?: string | null
+      }
+
+      export interface ComplexWithDefaults {
+        id: string
+        name: string
+        nullable?: string | null
+        /**  Defaults to: CURRENT_TIMESTAMP. */
+        created_at?: Date
         created_on: Date
         /** This is an awesome field  */
         documented_field?: string | null
@@ -117,7 +142,12 @@ describe('inferTable', () => {
       export type JSONObject = { [member: string]: JSONValue }
       export interface JSONArray extends Array<JSONValue> {}
 
-      export interface table_with_json {
+      export interface Table_with_json {
+        id: string
+        data?: JSONValue | null
+      }
+
+      export interface Table_with_jsonWithDefaults {
         id: string
         data?: JSONValue | null
       }
@@ -139,13 +169,20 @@ describe('inferSchema', () => {
       export type JSONObject = { [member: string]: JSONValue }
       export interface JSONArray extends Array<JSONValue> {}
 
-      export interface agreements {
+      export interface Agreements {
         id: string
         billing_plan_id: string
         category: string
         name: string
       }
-      export interface complex {
+
+      export interface AgreementsWithDefaults {
+        id: string
+        billing_plan_id: string
+        category: string
+        name: string
+      }
+      export interface Complex {
         id: string
         name: string
         nullable?: string | null
@@ -155,13 +192,36 @@ describe('inferSchema', () => {
         /** This is an awesome field  */
         documented_field?: string | null
       }
-      export interface requests {
+
+      export interface ComplexWithDefaults {
+        id: string
+        name: string
+        nullable?: string | null
+        /**  Defaults to: CURRENT_TIMESTAMP. */
+        created_at?: Date
+        created_on: Date
+        /** This is an awesome field  */
+        documented_field?: string | null
+      }
+      export interface Requests {
         id: number
         name: string
         url: string
         integration_type: 'source' | 'destination'
       }
-      export interface table_with_json {
+
+      export interface RequestsWithDefaults {
+        id: number
+        name: string
+        url: string
+        integration_type: 'source' | 'destination'
+      }
+      export interface Table_with_json {
+        id: string
+        data?: JSONValue | null
+      }
+
+      export interface Table_with_jsonWithDefaults {
         id: string
         data?: JSONValue | null
       }
