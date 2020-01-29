@@ -54,7 +54,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'agreements')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.3.0
+       Schema Generated with mysql-schema-ts 1.4.0
       */
 
       /**
@@ -89,7 +89,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'requests')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.3.0
+       Schema Generated with mysql-schema-ts 1.4.0
       */
 
       /**
@@ -124,7 +124,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'complex')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.3.0
+       Schema Generated with mysql-schema-ts 1.4.0
       */
 
       /**
@@ -167,13 +167,13 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'table_with_json')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.3.0
+       Schema Generated with mysql-schema-ts 1.4.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
       export type JSONValue = JSONPrimitive | JSONObject | JSONArray
       export type JSONObject = { [member: string]: JSONValue }
-      export interface JSONArray extends Array<JSONValue> {}
+      export type JSONArray = Array<JSONValue>
 
       /**
        * Exposes all fields present in table_with_json as a typescript
@@ -205,13 +205,13 @@ describe('inferSchema', () => {
     const code = await inferSchema(connectionString)
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.3.0
+       Schema Generated with mysql-schema-ts 1.4.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
       export type JSONValue = JSONPrimitive | JSONObject | JSONArray
       export type JSONObject = { [member: string]: JSONValue }
-      export interface JSONArray extends Array<JSONValue> {}
+      export type JSONArray = Array<JSONValue>
 
       /**
        * Exposes all fields present in agreements as a typescript
