@@ -42,8 +42,8 @@ async function main(): Promise<string> {
 
 main()
   .then(code => {
-    console.log(code)
-    process.exit()
+    process.stdout.write(code)
+    process.exit(0)
   })
   .catch(err => {
     console.error(err)
