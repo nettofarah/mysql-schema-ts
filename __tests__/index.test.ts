@@ -3,7 +3,7 @@ import { query } from '../src/mysql-client'
 import { inferTable, inferSchema } from '../src'
 import { SQL as sql } from 'sql-template-strings'
 
-const connectionString = 'mysql://root@localhost:3306/test'
+const connectionString = process.env.MYSQL_URI || 'mysql://root@localhost:3306/test'
 const conn = createConnection(connectionString)
 
 const agreements = sql`
