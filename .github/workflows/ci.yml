@@ -1,0 +1,52 @@
+name: CI
+
+on: [push]
+
+env:
+  CI: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Start MySQL server
+        run: sudo /etc/init.d/mysql start
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: node${{ matrix.node-version }}-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build TypeScript
+        run: yarn build
+
+      - name: Lint files
+        run: yarn lint
+
+      - name: Create MySQL database
+        run: mysql --user=root --password=root --execute='CREATE DATABASE `test`;'
+
+      - name: Run tests
+        run: yarn jest
+
+      - name: Scope for Node
+        uses: undefinedlabs/scope-for-javascript-action@v1
+        with:
+          dsn: ${{secrets.SCOPE_DSN}} # required
+          command: yarn jest

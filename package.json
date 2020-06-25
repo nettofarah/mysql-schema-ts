@@ -66,6 +66,7 @@
     "@types/prettier": "^1.19.0",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
+    "@undefinedlabs/scope-agent": "^0.7.3",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "husky": "^3.1.0",
