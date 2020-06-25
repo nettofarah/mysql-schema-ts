@@ -43,10 +43,10 @@ jobs:
         run: mysql --user=root --password=root --execute='CREATE DATABASE `test`;'
 
       - name: Run tests
-        run: MYSQL_URI=mysql://root:root@localhost:3306/test yarn jest
+        run: MYSQL_URI=mysql://root:root@localhost:3306/test yarn jest --forceExit
 
       - name: Scope for Node
         uses: undefinedlabs/scope-for-javascript-action@v1
         with:
           dsn: ${{secrets.SCOPE_DSN}} # required
-          command: MYSQL_URI=mysql://root:root@localhost:3306/test yarn jest
+          command: MYSQL_URI=mysql://root:root@localhost:3306/test yarn jest --forceExit
