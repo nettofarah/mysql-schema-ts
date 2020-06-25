@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "test": "docker-compose up -d && jest --runInBand --forceExit",
+    "build": "tsc",
     "pub": "tsc && np",
     "mycli": "docker run -it --rm --network host chaifeng/mycli mysql://localhost:3306/test",
     "cli": "ts-node --transpile-only ./bin/index.ts"
