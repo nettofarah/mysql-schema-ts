@@ -40,7 +40,7 @@ export function mapColumn(Table: Table, enumTypes: Enums): Table {
         column.tsType = 'number'
         return column
       case 'tinyint':
-        column.tsType = 'boolean'
+        column.tsType = 'number'
         return column
       case 'json':
         column.tsType = 'JSONValue'
