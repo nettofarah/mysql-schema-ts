@@ -24,6 +24,7 @@ type TableColumnType = {
   is_nullable: string
   column_default: string | null
   column_comment: string | null
+  extra: string | null
 }
 
 type TableType = {
@@ -93,7 +94,6 @@ export class MySQL {
       sql`SELECT
          column_name as column_name,
          column_type as column_type,
-         data_type as data_type 
       FROM information_schema.columns 
       WHERE data_type IN ('enum', 'set')
       AND table_schema = ${this.schema()}
@@ -120,8 +120,9 @@ export class MySQL {
            is_nullable as is_nullable,
            column_default as column_default,
            column_comment as column_comment
+           extra as extra
        FROM information_schema.columns
-       WHERE table_name = ${tableName} 
+       WHERE table_name = ${tableName}
        AND table_schema = ${tableSchema}`
     )
 
@@ -130,11 +131,12 @@ export class MySQL {
       const dataType = schemaItem.data_type
       const isEnum = /^(enum|set)$/i.test(dataType)
       const nullable = schemaItem.is_nullable === 'YES'
+      const hasImplicitDefault = (!nullable && schemaItem.extra === 'auto_increment')
 
       Table[columnName] = {
         udtName: isEnum ? enumNameFromColumn(dataType, columnName) : dataType,
         comment: schemaItem.column_comment,
-        hasDefault: Boolean(schemaItem.column_default),
+        hasDefault: Boolean(schemaItem.column_default) || hasImplicitDefault,
         defaultValue: schemaItem.column_default,
         nullable
       }
