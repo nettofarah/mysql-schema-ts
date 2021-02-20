@@ -54,7 +54,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'agreements')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.6.2
+       Schema Generated with mysql-schema-ts 1.7.0
       */
 
       /**
@@ -89,7 +89,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'requests')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.6.2
+       Schema Generated with mysql-schema-ts 1.7.0
       */
 
       /**
@@ -124,7 +124,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'complex')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.6.2
+       Schema Generated with mysql-schema-ts 1.7.0
       */
 
       /**
@@ -167,7 +167,7 @@ describe('inferTable', () => {
     const code = await inferTable(connectionString, 'table_with_json')
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.6.2
+       Schema Generated with mysql-schema-ts 1.7.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
@@ -205,7 +205,7 @@ describe('inferSchema', () => {
     const code = await inferSchema(connectionString)
     expect(code).toMatchInlineSnapshot(`
       "/**
-       Schema Generated with mysql-schema-ts 1.6.2
+       Schema Generated with mysql-schema-ts 1.7.0
       */
 
       export type JSONPrimitive = string | number | boolean | null
