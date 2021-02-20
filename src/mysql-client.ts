@@ -72,7 +72,7 @@ export class MySQL {
   private async tableNames(): Promise<string[]> {
     const schemaTables = await query<TableType>(
       this.connection,
-      sql`SELECT table_name
+      sql`SELECT table_name as table_name
        FROM information_schema.columns
        WHERE table_schema = ${this.schema()}
        GROUP BY table_name
@@ -90,7 +90,10 @@ export class MySQL {
 
     const rawEnumRecords = await query<EnumRecord>(
       this.connection,
-      sql`SELECT column_name, column_type, data_type 
+      sql`SELECT
+         column_name as column_name,
+         column_type as column_type,
+         data_type as data_type 
       FROM information_schema.columns 
       WHERE data_type IN ('enum', 'set')
       AND table_schema = ${this.schema()}
@@ -111,7 +114,12 @@ export class MySQL {
 
     const tableColumns = await query<TableColumnType>(
       this.connection,
-      sql`SELECT column_name, data_type, is_nullable, column_default, column_comment
+      sql`SELECT 
+           column_name as column_name,
+           data_type as data_type,
+           is_nullable as is_nullable,
+           column_default as column_default,
+           column_comment as column_comment
        FROM information_schema.columns
        WHERE table_name = ${tableName} 
        AND table_schema = ${tableSchema}`
