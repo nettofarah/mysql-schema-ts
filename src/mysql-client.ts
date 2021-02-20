@@ -94,8 +94,7 @@ export class MySQL {
       sql`SELECT
          column_name as column_name,
          column_type as column_type,
-         data_type as data_type
-      FROM information_schema.columns
+      FROM information_schema.columns 
       WHERE data_type IN ('enum', 'set')
       AND table_schema = ${this.schema()}
       AND table_name = ${tableName}`
@@ -115,7 +114,7 @@ export class MySQL {
 
     const tableColumns = await query<TableColumnType>(
       this.connection,
-      sql`SELECT
+      sql`SELECT 
            column_name as column_name,
            data_type as data_type,
            is_nullable as is_nullable,
