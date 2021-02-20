@@ -93,7 +93,7 @@ export class MySQL {
       this.connection,
       sql`SELECT
          column_name as column_name,
-         column_type as column_type,
+         column_type as column_type
       FROM information_schema.columns 
       WHERE data_type IN ('enum', 'set')
       AND table_schema = ${this.schema()}
@@ -119,7 +119,7 @@ export class MySQL {
            data_type as data_type,
            is_nullable as is_nullable,
            column_default as column_default,
-           column_comment as column_comment
+           column_comment as column_comment,
            extra as extra
        FROM information_schema.columns
        WHERE table_name = ${tableName}
@@ -131,7 +131,7 @@ export class MySQL {
       const dataType = schemaItem.data_type
       const isEnum = /^(enum|set)$/i.test(dataType)
       const nullable = schemaItem.is_nullable === 'YES'
-      const hasImplicitDefault = (!nullable && schemaItem.extra === 'auto_increment')
+      const hasImplicitDefault = !nullable && schemaItem.extra === 'auto_increment'
 
       Table[columnName] = {
         udtName: isEnum ? enumNameFromColumn(dataType, columnName) : dataType,
