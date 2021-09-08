@@ -1,4 +1,4 @@
-import { createConnection } from 'mysql'
+import { createConnection } from 'mysql2'
 import { query } from '../src/mysql-client'
 import { inferTable, inferSchema } from '../src'
 import { SQL as sql } from 'sql-template-strings'
