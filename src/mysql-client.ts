@@ -93,7 +93,7 @@ export class MySQL {
       this.connection,
       sql`SELECT
          column_name as column_name,
-         column_type as column_type,
+         column_type as column_type
       FROM information_schema.columns 
       WHERE data_type IN ('enum', 'set')
       AND table_schema = ${this.schema()}
@@ -119,7 +119,7 @@ export class MySQL {
            data_type as data_type,
            is_nullable as is_nullable,
            column_default as column_default,
-           column_comment as column_comment
+           column_comment as column_comment,
            extra as extra
        FROM information_schema.columns
        WHERE table_name = ${tableName}
