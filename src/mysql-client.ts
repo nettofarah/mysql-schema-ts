@@ -35,11 +35,11 @@ export type Enums = { [key: string]: string[] }
 
 export function query<T>(conn: Connection, sql: SQLStatement): Promise<T[]> {
   return new Promise((resolve, reject) => {
-    conn.query(sql.sql, sql.values, (error: QueryError | null, results: Array<T>) => {
+    conn.query(sql.sql, sql.values, (error: QueryError | null, results) => {
       if (error) {
         return reject(error)
       }
-      return resolve(results)
+      return resolve(results as Array<T>)
     })
   })
 }
@@ -131,7 +131,7 @@ export class MySQL {
       const dataType = schemaItem.data_type
       const isEnum = /^(enum|set)$/i.test(dataType)
       const nullable = schemaItem.is_nullable === 'YES'
-      const hasImplicitDefault = (!nullable && schemaItem.extra === 'auto_increment')
+      const hasImplicitDefault = !nullable && schemaItem.extra === 'auto_increment'
 
       Table[columnName] = {
         udtName: isEnum ? enumNameFromColumn(dataType, columnName) : dataType,
