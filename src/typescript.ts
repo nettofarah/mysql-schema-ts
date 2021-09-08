@@ -35,15 +35,13 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
       .map(column => {
         const type = table[column].tsType
         const nullable = table[column].nullable ? '| null' : ''
-
-        const hasDefault = table[column].hasDefault
-        const defaultComment = hasDefault ? `Defaults to: ${table[column].defaultValue}.` : ''
+        const defaultComment = table[column].defaultValue ? `Defaults to: ${table[column].defaultValue}.` : ''
         const comment = `${table[column].comment} ${defaultComment}`
         const tsComment = comment.trim().length > 0 ? `\n/** ${comment} */\n` : ''
 
         let isOptional = table[column].nullable
         if (withDefaults) {
-          isOptional = isOptional || hasDefault
+          isOptional = isOptional || table[column].hasDefault
         }
 
         return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
