@@ -19,7 +19,7 @@ type EnumRecord = {
 }
 
 type TableColumnType = {
-  position: number
+  index: number
   column_name: string
   data_type: string
   is_nullable: string
@@ -116,7 +116,7 @@ export class MySQL {
     const tableColumns = await query<TableColumnType>(
       this.connection,
       sql`SELECT 
-           ordinal_position as position,
+           ordinal_position as index,
            column_name as column_name,
            data_type as data_type,
            is_nullable as is_nullable,
@@ -136,7 +136,7 @@ export class MySQL {
       const hasImplicitDefault = !nullable && schemaItem.extra === 'auto_increment'
 
       Table[columnName] = {
-        position: schemaItem.position,
+        index: schemaItem.index,
         udtName: isEnum ? enumNameFromColumn(dataType, columnName) : dataType,
         comment: schemaItem.column_comment,
         hasDefault: Boolean(schemaItem.column_default) || hasImplicitDefault,

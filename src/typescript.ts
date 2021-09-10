@@ -1,7 +1,7 @@
 import camelcase from 'camelcase'
 
 export interface Column {
-  position: number
+  index: number
   udtName: string
   nullable: boolean
   hasDefault: boolean
@@ -31,7 +31,7 @@ function normalize(name: string): string {
 export function tableToTS(name: string, prefix: string, table: Table): string {
   const members = (withDefaults: boolean): string[] =>
     Object.keys(table)
-      .sort((a, b) => table[a].position - table[b].position)
+      .sort((a, b) => table[a].index - table[b].index)
       .map(column => {
         const type = table[column].tsType
         const nullable = table[column].nullable ? '| null' : ''
