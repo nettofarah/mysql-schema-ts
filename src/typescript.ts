@@ -1,6 +1,7 @@
 import camelcase from 'camelcase'
 
 export interface Column {
+  index: number
   udtName: string
   nullable: boolean
   hasDefault: boolean
@@ -29,20 +30,22 @@ function normalize(name: string): string {
 
 export function tableToTS(name: string, prefix: string, table: Table): string {
   const members = (withDefaults: boolean): string[] =>
-    Object.keys(table).map(column => {
-      const type = table[column].tsType
-      const nullable = table[column].nullable ? '| null' : ''
-      const defaultComment = table[column].defaultValue ? `Defaults to: ${table[column].defaultValue}.` : ''
-      const comment = `${table[column].comment} ${defaultComment}`
-      const tsComment = comment.trim().length > 0 ? `\n/** ${comment} */\n` : ''
+    Object.keys(table)
+      .sort((a, b) => table[a].index - table[b].index)
+      .map(column => {
+        const type = table[column].tsType
+        const nullable = table[column].nullable ? '| null' : ''
+        const defaultComment = table[column].defaultValue ? `Defaults to: ${table[column].defaultValue}.` : ''
+        const comment = `${table[column].comment} ${defaultComment}`
+        const tsComment = comment.trim().length > 0 ? `\n/** ${comment} */\n` : ''
 
-      let isOptional = table[column].nullable
-      if (withDefaults) {
-        isOptional = isOptional || table[column].hasDefault
-      }
+        let isOptional = table[column].nullable
+        if (withDefaults) {
+          isOptional = isOptional || table[column].hasDefault
+        }
 
-      return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
-    })
+        return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
+      })
 
   const tableName = (prefix || '') + camelize(normalize(name))
 
