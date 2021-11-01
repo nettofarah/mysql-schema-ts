@@ -73,7 +73,7 @@ describe('inferTable', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface AgreementsWithDefaults {
         id: string
@@ -108,7 +108,7 @@ describe('inferTable', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface RequestsWithDefaults {
         id: number
@@ -147,7 +147,7 @@ describe('inferTable', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface ComplexWithDefaults {
         id: string
@@ -189,7 +189,7 @@ describe('inferTable', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface TableWithJsonWithDefaults {
         id: string
@@ -229,7 +229,7 @@ describe('inferSchema', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface AgreementsWithDefaults {
         id: string
@@ -257,7 +257,7 @@ describe('inferSchema', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface ComplexWithDefaults {
         id: string
@@ -285,7 +285,7 @@ describe('inferSchema', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface RequestsWithDefaults {
         id: number
@@ -307,7 +307,7 @@ describe('inferSchema', () => {
        * but makes every field containing a DEFAULT value optional.
        *
        * This is especially useful when generating inserts, as you
-       * should be able to ommit these fields if you'd like
+       * should be able to omit these fields if you'd like
        */
       export interface TableWithJsonWithDefaults {
         id: string
