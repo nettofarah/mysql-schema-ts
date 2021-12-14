@@ -29,7 +29,7 @@ function normalize(name: string): string {
 
 export function tableToTS(name: string, prefix: string, table: Table): string {
   const members = (withDefaults: boolean): string[] =>
-    Object.keys(table).map((column) => {
+    Object.keys(table).map(column => {
       const type = table[column].tsType
       const nullable = table[column].nullable ? '| null' : ''
       const defaultComment = table[column].defaultValue ? `Defaults to: ${table[column].defaultValue}.` : ''
@@ -66,4 +66,29 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
     ${members(true)}
     }
   `.trim()
+}
+
+export function schemaToTS(
+  name: string,
+  tablePrefix: string,
+  tables: {
+    name: string
+    table: Table
+  }[]
+): string {
+  return `
+  /**
+   * Exposes database schema type that contains all table definitions
+  */
+  export interface ${camelize(name)} {
+  ${tables
+    .map(table => {
+      const tableTypeName = tablePrefix + camelize(normalize(table.name))
+
+      // don't prepend the prefix to the table name on the left (object key) because it's supposed to match the actual database table names
+      return `${table.name}: { simple: ${tableTypeName}; withDefaults: ${tableTypeName}WithDefaults; };`
+    })
+    .join('\n')}
+  }
+`.trim()
 }

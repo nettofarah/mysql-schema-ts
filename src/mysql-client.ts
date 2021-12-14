@@ -45,18 +45,17 @@ export function query<T>(conn: Connection, sql: SQLStatement): Promise<T[]> {
 }
 
 export class MySQL {
-  private connection: Connection
-  private defaultSchema: string
+  private readonly connection: Connection
+  public readonly databaseName: string
 
   constructor(connectionString: string) {
     this.connection = createConnection(connectionString)
-    const database = urlParse(connectionString, true).pathname?.substr(1) || 'public'
-    this.defaultSchema = database
+    this.databaseName = urlParse(connectionString, true).pathname?.substr(1) || 'public'
   }
 
   public async table(tableName: string): Promise<Table> {
     const enumTypes = await this.enums(tableName)
-    const table = await this.getTable(tableName, this.schema())
+    const table = await this.getTable(tableName, this.databaseName)
     return mapColumn(table, enumTypes)
   }
 
@@ -75,15 +74,11 @@ export class MySQL {
       this.connection,
       sql`SELECT table_name as table_name
        FROM information_schema.columns
-       WHERE table_schema = ${this.schema()}
+       WHERE table_schema = ${this.databaseName}
        GROUP BY table_name
       `
     )
     return schemaTables.map(schemaItem => schemaItem.table_name)
-  }
-
-  public schema(): string {
-    return this.defaultSchema
   }
 
   private async enums(tableName: string): Promise<Enums> {
@@ -97,7 +92,7 @@ export class MySQL {
          data_type as data_type
       FROM information_schema.columns 
       WHERE data_type IN ('enum', 'set')
-      AND table_schema = ${this.schema()}
+      AND table_schema = ${this.databaseName}
       AND table_name = ${tableName}`
     )
 

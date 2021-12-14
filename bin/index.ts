@@ -10,6 +10,7 @@ const cli = meow(
 	Options
     --table, -t  Table name
     --prefix, -p Prefix to add to table names
+    --schema-name, -s Overrides name of the database schema
 
 	Examples
 	  $ mysql-schema-ts --prefix SQL
@@ -24,20 +25,25 @@ const cli = meow(
         type: 'string',
         alias: 'p',
         default: ''
+      },
+      schemaName: {
+        type: 'string',
+        alias: 's',
+        default: ''
       }
     }
   }
 )
 
 const db = cli.input[0]
-const { table, prefix } = cli.flags
+const { table, prefix, schemaName } = cli.flags
 
 async function main(): Promise<string> {
   if (table) {
     return inferTable(db, table, prefix)
   }
 
-  return inferSchema(db, prefix)
+  return inferSchema(db, schemaName ? schemaName : null, prefix)
 }
 
 main()
