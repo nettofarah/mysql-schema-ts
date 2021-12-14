@@ -1,4 +1,4 @@
-import { tableToTS, Table } from './typescript'
+import { tableToTS, Table, schemaToTS } from './typescript'
 import { MySQL } from './mysql-client'
 import prettier from 'prettier'
 import pkg from '../package.json'
@@ -25,9 +25,9 @@ const header = (includesJSON: boolean): string => `
 ${includesJSON ? JSONHeader : ''}
 `
 
-export async function inferTable(connectionString: string, table: string, prefix?: string): Promise<string> {
+export async function inferTable(connectionString: string, table: string, prefix = ''): Promise<string> {
   const db = new MySQL(connectionString)
-  const code = tableToTS(table, prefix || '', await db.table(table))
+  const code = tableToTS(table, prefix, await db.table(table))
   const fullCode = `
     ${header(code.includes('JSON'))}
     ${code}
@@ -35,11 +35,19 @@ export async function inferTable(connectionString: string, table: string, prefix
   return pretty(fullCode)
 }
 
-export async function inferSchema(connectionString: string, prefix?: string): Promise<string> {
+export async function inferSchema(
+  connectionString: string,
+  schemaName: string | null = null,
+  prefix = ''
+): Promise<string> {
   const db = new MySQL(connectionString)
   const tables = await db.allTables()
-  const interfaces = tables.map(table => tableToTS(table.name, prefix || '', table.table))
-  const code = [header(interfaces.some(i => i.includes('JSON'))), ...interfaces].join('\n')
+  const interfaces = tables.map(table => tableToTS(table.name, prefix, table.table))
+  const code = [
+    header(interfaces.some(i => i.includes('JSON'))),
+    ...interfaces,
+    schemaToTS(schemaName ?? `${db.databaseName}Schema`, prefix, tables)
+  ].join('\n\n')
   return pretty(code)
 }
 
@@ -48,7 +56,7 @@ export async function inferTableObject(connectionString: string, table: string):
   return db.table(table)
 }
 
-export async function inferSchemaObject(connectionString: string) {
+export async function inferSchemaObject(connectionString: string): Promise<{ name: string; table: Table }[]> {
   const db = new MySQL(connectionString)
   const tables = await db.allTables()
   return tables
