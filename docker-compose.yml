@@ -1,7 +1,9 @@
-mysql:
-  image: mysql:5.7
-  ports:
-    - '3306:3306'
-  environment:
-    MYSQL_DATABASE: test
-    MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+services:
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
