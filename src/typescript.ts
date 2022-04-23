@@ -27,9 +27,9 @@ function normalize(name: string): string {
   return safename
 }
 
-export function tableToTS(name: string, prefix: string, table: Table): string {
+export function tableToTS(name: string, prefix: string, table: Table, defaultsInterfaces = true): string {
   const members = (withDefaults: boolean): string[] =>
-    Object.keys(table).map((column) => {
+    Object.keys(table).map(column => {
       const type = table[column].tsType
       const nullable = table[column].nullable ? '| null' : ''
       const defaultComment = table[column].defaultValue ? `Defaults to: ${table[column].defaultValue}.` : ''
@@ -41,29 +41,34 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
         isOptional = isOptional || table[column].hasDefault
       }
 
-      return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
+      return `${tsComment}"${normalize(column)}"${isOptional ? '?' : ''}: ${type}${nullable}\n`
     })
 
   const tableName = (prefix || '') + camelize(normalize(name))
 
-  return `
-    /**
-     * Exposes all fields present in ${name} as a typescript
-     * interface.
-    */
-    export interface ${tableName} {
-    ${members(false)}
-    }
+  let output = `
+  /**
+   * Exposes all fields present in ${name} as a typescript
+   * interface.
+  */
+  export interface ${tableName} {
+  ${members(false)}
+  }
+`
 
-    /**
-     * Exposes the same fields as ${tableName},
-     * but makes every field containing a DEFAULT value optional.
-     *
-     * This is especially useful when generating inserts, as you
-     * should be able to omit these fields if you'd like
-    */
-    export interface ${tableName}WithDefaults {
-    ${members(true)}
-    }
-  `.trim()
+  if (defaultsInterfaces) {
+    output += `
+  /**
+  * Exposes the same fields as ${tableName},
+  * but makes every field containing a DEFAULT value optional.
+  *
+  * This is especially useful when generating inserts, as you
+  * should be able to omit these fields if you'd like
+ */
+ export interface ${tableName}WithDefaults {
+ ${members(true)}
+ }`
+  }
+
+  return output.trim()
 }

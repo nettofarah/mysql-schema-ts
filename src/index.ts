@@ -25,9 +25,14 @@ const header = (includesJSON: boolean): string => `
 ${includesJSON ? JSONHeader : ''}
 `
 
-export async function inferTable(connectionString: string, table: string, prefix?: string): Promise<string> {
+export async function inferTable(
+  connectionString: string,
+  table: string,
+  prefix?: string,
+  defaultsInterfaces?: boolean
+): Promise<string> {
   const db = new MySQL(connectionString)
-  const code = tableToTS(table, prefix || '', await db.table(table))
+  const code = tableToTS(table, prefix || '', await db.table(table), defaultsInterfaces)
   const fullCode = `
     ${header(code.includes('JSON'))}
     ${code}
@@ -35,10 +40,14 @@ export async function inferTable(connectionString: string, table: string, prefix
   return pretty(fullCode)
 }
 
-export async function inferSchema(connectionString: string, prefix?: string): Promise<string> {
+export async function inferSchema(
+  connectionString: string,
+  prefix?: string,
+  defaultsInterfaces?: boolean
+): Promise<string> {
   const db = new MySQL(connectionString)
   const tables = await db.allTables()
-  const interfaces = tables.map(table => tableToTS(table.name, prefix || '', table.table))
+  const interfaces = tables.map(table => tableToTS(table.name, prefix || '', table.table, defaultsInterfaces))
   const code = [header(interfaces.some(i => i.includes('JSON'))), ...interfaces].join('\n')
   return pretty(code)
 }
