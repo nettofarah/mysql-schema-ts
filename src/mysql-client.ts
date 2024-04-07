@@ -1,5 +1,5 @@
 import { createConnection, Connection, QueryError } from 'mysql2'
-import { parse as urlParse } from 'url'
+import { URL } from 'url'
 import { Table } from './typescript'
 import { mapColumn } from './column-map'
 import { SQL as sql, SQLStatement } from 'sql-template-strings'
@@ -33,6 +33,18 @@ type TableType = {
 
 export type Enums = { [key: string]: string[] }
 
+export type DatabaseConfig = {
+  host: string;
+  port: string;
+  database: string;
+  user: string;
+  password: string;
+};
+
+export type ConnectionConfig = DatabaseConfig & {
+  [key: string]: string;
+}
+
 export function query<T>(conn: Connection, sql: SQLStatement): Promise<T[]> {
   return new Promise((resolve, reject) => {
     conn.query(sql.sql, sql.values, (error: QueryError | null, results) => {
@@ -47,12 +59,17 @@ export function query<T>(conn: Connection, sql: SQLStatement): Promise<T[]> {
 export class MySQL {
   private connection: Connection
   private defaultSchema: string
+  private readonly _connectionString: string
 
   constructor(connectionString: string) {
-    this.connection = createConnection(connectionString)
-    const database = urlParse(connectionString, true).pathname?.substr(1) || 'public'
+    this._connectionString = connectionString
+    const connectionOptions = this.getConnectionConfig()
+
+    this.connection = createConnection(connectionOptions as object)
+    const database = connectionOptions.database || 'public'
     this.defaultSchema = database
   }
+
 
   public async table(tableName: string): Promise<Table> {
     const enumTypes = await this.enums(tableName)
@@ -144,5 +161,28 @@ export class MySQL {
     })
 
     return Table
+  }
+  
+  private getConnectionConfig(): ConnectionConfig {
+    const url = new URL(this._connectionString)
+    
+    const options: ConnectionConfig = {
+      host: url.hostname,
+      port: url.port,
+      database: decodeURIComponent(url.pathname.substr(1)),
+      user: decodeURIComponent(url.username),// try decoding user cause some special character might be encoded 
+      password: decodeURIComponent(url.password) // try decoding password cause some special character might be encoded 
+    }
+    
+    url.searchParams.forEach((value, key) => {
+      try {
+        // Try to parse this as a JSON expression first
+        options[key] = JSON.parse(value)
+      } catch (err) {
+        // Otherwise assume it is a plain string
+        options[key] = value
+      }
+    })
+    return options
   }
 }
